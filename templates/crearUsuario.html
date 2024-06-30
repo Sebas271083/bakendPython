@@ -1,0 +1,119 @@
+<!-- templates/login.html -->
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <!-- Incluir Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Estilos personalizados -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 400px;
+            margin: auto;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+        }
+
+        .form-signin input[type="text"],
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo-container">
+            <!-- <p class="logo-texto">Impresiones3D</p> -->
+            <a href="./index.html">
+                <img class="logo" src="{{ url_for('static', filename='images/Logo.jpg') }}" alt="">
+            </a>
+        </div>
+
+        <div style="text-align: center;" id="resultado">
+            <img style="max-width: 40px;" src="{{ url_for('static', filename='images/clima.png') }}" alt="">
+        </div>
+        <ul class="nav-links">
+            <li><a href="./index.html">Inicio</a></li>
+            <li><a href="{{ url_for('productos')}}">Productos</a></li>
+            <li><a href="#">Servicios</a></li>
+            <li><a href="#about">Acerca de</a></li>
+            <li><a href="./contacto.html">Contacto</a></li>
+            <li><a href="./carrito.html" style="color: white;" class="nav-link" href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M17 18a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.11.89-2 2-2M1 2h3.27l.94 2H20a1 1 0 0 1 1 1c0 .17-.05.34-.12.5l-3.58 6.47c-.34.61-1 1.03-1.75 1.03H8.1l-.9 1.63l-.03.12a.25.25 0 0 0 .25.25H19v2H7a2 2 0 0 1-2-2c0-.35.09-.68.24-.96l1.36-2.45L3 4H1zm6 16a2 2 0 0 1 2 2a2 2 0 0 1-2 2a2 2 0 0 1-2-2c0-1.11.89-2 2-2m9-7l2.78-5H6.14l2.36 5z" />
+                    </svg>
+                </a>
+                <p id="contadorCarrito"></p>
+            </li>
+            <li>
+                <a id="btn-desplegable" style="color: white;" class="nav-link dropdown-toggle" href="#"
+                    id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 36 36">
+                        <path fill="currentColor"
+                            d="M18 17a7 7 0 1 0-7-7a7 7 0 0 0 7 7m0-12a5 5 0 1 1-5 5a5 5 0 0 1 5-5"
+                            class="clr-i-outline clr-i-outline-path-1" />
+                        <path fill="currentColor"
+                            d="M30.47 24.37a17.16 17.16 0 0 0-24.93 0A2 2 0 0 0 5 25.74V31a2 2 0 0 0 2 2h22a2 2 0 0 0 2-2v-5.26a2 2 0 0 0-.53-1.37M29 31H7v-5.27a15.17 15.17 0 0 1 22 0Z"
+                            class="clr-i-outline clr-i-outline-path-2" />
+                        <path fill="none" d="M0 0h36v36H0z" />
+                    </svg>
+                </a>
+                <ul id="desplegable" style="display: none;">
+                    <li><a class="" href="{{ url_for('login')}}">Iniciar Sesión</a></li>
+                    <li><a class="" href="#">Cerrar Sesión</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+    </nav>
+
+    <form class="form-signin" method="POST" style="margin-top: 100px;">
+        <h1 class="h3 mb-3 font-weight-normal text-center">Crear Usuario</h1>
+        <label for="inputUsername" class="sr-only">Nombre de usuario</label>
+        <input type="text" id="inputUsername" name="nombre" class="form-control" placeholder="Nombre de usuario"
+            required autofocus>
+        <label for="inputLastname" class="sr-only">Nombre de usuario</label>
+        <input type="text" id="inputLastname" name="apellido" class="form-control" placeholder="Apellido"
+            required autofocus>
+        <label for="inputPassword" class="sr-only">Contraseña</label>
+        <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Contraseña"
+            required>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Crear Usuario</button>
+        <p>Ya tienes usuario? <a href="">Ingresa</a></p>
+    </form>
+
+
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
+        integrity="sha384-oApTjq9W3U6qoquNL8x/GjYLOUvGr3zC2IeIKI+Z2RZHSUazvn2WYmFExIaHnJoM"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
