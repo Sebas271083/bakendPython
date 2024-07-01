@@ -62,9 +62,17 @@
                         <path fill="none" d="M0 0h36v36H0z" />
                     </svg>
                 </a>
-                <ul id="desplegable" style="display: none;">
-                    <li><a class="" href="{{ url_for('login')}}">Iniciar Sesión</a></li>
-                    <li><a class="" href="#">Cerrar Sesión</a></li>
+                {% if 'user_id' in session %}
+                    <ul id="desplegable" style="display: none;">
+                        <li><a class="" href="{{ url_for('crear') }}">Agregar Productos</a></li>
+                        <li><a class="" href="{{ url_for('productosAdmin') }}">Administrar Productos</a></li>
+                        <li><a class="" href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+                    </ul>
+                {% else %}
+                    <ul id="desplegable" style="display: none;">
+                        <li><a class="" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+                    </ul>
+                {% endif %}
                 </ul>
             </li>
         </ul>

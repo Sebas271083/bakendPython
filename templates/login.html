@@ -38,17 +38,16 @@
 
     <nav class="navbar">
         <div class="logo-container">
-            <!-- <p class="logo-texto">Impresiones3D</p> -->
+            <p class="logo-texto">Impresiones3D</p>
             <a href="./index.html">
                 <img class="logo" src="{{ url_for('static', filename='images/Logo.jpg') }}" alt="">
             </a>
         </div>
-
         <div style="text-align: center;" id="resultado">
             <img style="max-width: 40px;" src="{{ url_for('static', filename='images/clima.png') }}" alt="">
         </div>
         <ul class="nav-links">
-            <li><a href="./index.html">Inicio</a></li>
+            <li><a href="{{ url_for('index')}}">Inicio</a></li>
             <li><a href="{{ url_for('productos')}}">Productos</a></li>
             <li><a href="#">Servicios</a></li>
             <li><a href="#about">Acerca de</a></li>
@@ -74,9 +73,17 @@
                         <path fill="none" d="M0 0h36v36H0z" />
                     </svg>
                 </a>
-                <ul id="desplegable" style="display: none;">
-                    <li><a class="" href="{{ url_for('login')}}">Iniciar Sesión</a></li>
-                    <li><a class="" href="#">Cerrar Sesión</a></li>
+                {% if 'user_id' in session %}
+                    <ul id="desplegable" style="display: none;">
+                        <li><a class="" href="{{ url_for('crear') }}">Agregar Productos</a></li>
+                        <li><a class="" href="{{ url_for('productosAdmin') }}">Administrar Productos</a></li>
+                        <li><a class="" href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+                    </ul>
+                {% else %}
+                    <ul id="desplegable" style="display: none;">
+                        <li><a class="" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+                    </ul>
+                {% endif %}
                 </ul>
             </li>
         </ul>
@@ -103,12 +110,11 @@
         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Contraseña"
             required>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Iniciar Sesión</button>
-        <p>Aun no tienes usuario? <a href="">crea uno</a></p>
+        <p>Aun no tienes usuario? <a href="{{ url_for('crearUsuario') }}">crea uno</a></p>
     </form>
 
 
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -119,6 +125,8 @@
         integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N"
         crossorigin="anonymous"></script>
 </body>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
 
 
 <script>

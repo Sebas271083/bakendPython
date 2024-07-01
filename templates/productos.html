@@ -18,15 +18,15 @@
         <div class="logo-container">
             <p class="logo-texto">Impresiones3D</p>
             <a href="./index.html">
-                <img class="logo" src="./Logo.jpg" alt="">
+                <img class="logo" src="{{ url_for('static', filename='images/Logo.jpg') }}" alt="">
             </a>
         </div>
         <div style="text-align: center;" id="resultado">
-            <img style="max-width: 40px;" src="./img/clima.png" alt="">
+            <img style="max-width: 40px;" src="{{ url_for('static', filename='images/clima.png') }}" alt="">
         </div>
         <ul class="nav-links">
             <li><a href="{{ url_for('index')}}">Inicio</a></li>
-            <li><a href="./productos.html">Productos</a></li>
+            <li><a href="{{ url_for('productos')}}">Productos</a></li>
             <li><a href="#">Servicios</a></li>
             <li><a href="#about">Acerca de</a></li>
             <li><a href="./contacto.html">Contacto</a></li>
@@ -51,9 +51,17 @@
                         <path fill="none" d="M0 0h36v36H0z" />
                     </svg>
                 </a>
-                <ul id="desplegable" style="display: none;">
-                    <li><a class="" href="./iniciar-sesion.html">Iniciar Sesión</a></li>
-                    <li><a class="" href="#">Cerrar Sesión</a></li>
+                {% if 'user_id' in session %}
+                    <ul id="desplegable" style="display: none;">
+                        <li><a class="" href="{{ url_for('crear') }}">Agregar Productos</a></li>
+                        <li><a class="" href="{{ url_for('productosAdmin') }}">Administrar Productos</a></li>
+                        <li><a class="" href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+                    </ul>
+                {% else %}
+                    <ul id="desplegable" style="display: none;">
+                        <li><a class="" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+                    </ul>
+                {% endif %}
                 </ul>
             </li>
         </ul>
@@ -67,7 +75,22 @@
 
     <div class="content">
         <h2 class="tituloProductos">Nuestros Productos</h2>
-        <div class="card-container" id="card-container">
+        <div class="container mt-5">
+            <div class="row">
+                {% for producto in data %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ producto[1] }}</h5>
+                            <img src="{{ url_for('static', filename='images/' + producto[5]) }}" alt="">
+                            <p class="card-text">{{ producto[2] }}</p>
+                            <p class="card-text"><strong>Precio:</strong> ${{ producto[4] }}</p>
+                            <a href="#" class="btn btn-primary">Comprar</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
@@ -79,8 +102,8 @@
                 <h2>Sobre Nosotros</h2>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.</p>
                 <div class="contact">
-                    <span><i class="fas fa-phone"></i> 54-456-7890</span>
-                    <span><i class="fas fa-envelope"></i> info@mail.com</span>
+                    <span><i class="fas fa-phone"></i> 54-456-7890 </span>
+                    <span><i class="fas fa-envelope"></i> info@mail.com </span>
                 </div>
                 <div style="margin-top: 10px;" class="socials">
                     <a href="#"><img src="{{ url_for('static', filename='images/twitter.ico') }}" alt=""></i></a>
