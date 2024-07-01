@@ -32,7 +32,7 @@
             <img style="max-width: 40px;" src="{{ url_for('static', filename='images/clima.png') }}" alt="">
         </div>
         <ul class="nav-links">
-            <li><a href="./index.html">Inicio</a></li>
+            <li><a href="{{ url_for('index')}}">Inicio</a></li>
             <li><a href="{{ url_for('productos')}}">Productos</a></li>
             <li><a href="#">Servicios</a></li>
             <li><a href="#about">Acerca de</a></li>
@@ -58,10 +58,17 @@
                         <path fill="none" d="M0 0h36v36H0z" />
                     </svg>
                 </a>
-                <ul id="desplegable" style="display: none;">
-                    <li><a class="" href="{{ url_for('login')}}">Iniciar Sesión</a></li>
-                    <li><a class="" href="{{ url_for('logout')}}">Cerrar Sesión</a></li>
-                </ul>
+                {% if 'user_id' in session %}
+                    <ul id="desplegable" style="display: none;">
+                        <li><a class="" href="{{ url_for('crear') }}">Agregar Productos</a></li>
+                        <li><a class="" href="{{ url_for('productosAdmin') }}">Administrar Productos</a></li>
+                        <li><a class="" href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+                    </ul>
+                {% else %}
+                    <ul id="desplegable" style="display: none;">
+                        <li><a class="" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+                    </ul>
+                {% endif %}
             </li>
         </ul>
         <div class="hamburger" id="hamburger">

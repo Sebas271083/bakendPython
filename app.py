@@ -145,7 +145,16 @@ def crear():
                 print("Error al insertar en la base de datos:", e)
                 return redirect(request.url)
 
-    return render_template('crear.html')  
+    return render_template('crear.html') 
+
+@app.route('/productos')
+def productos():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM productos')
+    data = cur.fetchall()
+    app.logger.info("Datos obtenidos correctamente: %s", data)
+    cur.close()
+    return render_template('productos.html', data=data)
 
 @app.route('/productos/editar/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -199,9 +208,6 @@ def editarProducto(id):
     cur.close()
     return render_template('editarProductos.html', producto=producto)
 
-@app.route('/productos')
-def productos():
-    return render_template('productos.html')  
 
 
 @app.route('/productos-admin')
