@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Productos</title>
-    
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -59,15 +59,15 @@
                     </svg>
                 </a>
                 {% if 'user_id' in session %}
-                    <ul id="desplegable" style="display: none;">
-                        <li><a class="" href="{{ url_for('crear') }}">Agregar Productos</a></li>
-                        <li><a class="" href="{{ url_for('productosAdmin') }}">Administrar Productos</a></li>
-                        <li><a class="" href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
-                    </ul>
+                <ul id="desplegable" style="display: none;">
+                    <li><a class="" href="{{ url_for('crear') }}">Agregar Productos</a></li>
+                    <li><a class="" href="{{ url_for('productosAdmin') }}">Administrar Productos</a></li>
+                    <li><a class="" href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+                </ul>
                 {% else %}
-                    <ul id="desplegable" style="display: none;">
-                        <li><a class="" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
-                    </ul>
+                <ul id="desplegable" style="display: none;">
+                    <li><a class="" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+                </ul>
                 {% endif %}
             </li>
         </ul>
@@ -111,11 +111,16 @@
                             alt="Imagen de Producto" style="max-width: 60px;">
                     </td>
                     <td><a href="/productos/editar/{{producto[0]}}"><img
-                                src="{{ url_for('static', filename='images/edit.png') }}" alt="delete"
+                                src="{{ url_for('static', filename='images/edit.png') }}" alt="editar"
                                 style="width: 30px; text-align: center;"></td></a>
-                    <td><a href="/productos/eliminar/{{producto[0]}}"><img
-                                src="{{ url_for('static', filename='images/delete.png') }}" alt="delete"
-                                style="width: 30px; text-align: center;"></td></a>
+                    <td>
+                        <form action="{{ url_for('eliminar', id=producto[0]) }}" method="POST" style="display:inline;">
+                            <button type="submit" style="border: none; background: none; padding: 0;">
+                                <img src="{{ url_for('static', filename='images/delete.png') }}" alt="Eliminar"
+                                    style="width: 30px;">
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

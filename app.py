@@ -145,16 +145,7 @@ def crear():
                 print("Error al insertar en la base de datos:", e)
                 return redirect(request.url)
 
-    return render_template('crear.html') 
-
-@app.route('/productos')
-def productos():
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT * FROM productos')
-    data = cur.fetchall()
-    app.logger.info("Datos obtenidos correctamente: %s", data)
-    cur.close()
-    return render_template('productos.html', data=data)
+    return render_template('crear.html')  
 
 @app.route('/productos/editar/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -208,6 +199,9 @@ def editarProducto(id):
     cur.close()
     return render_template('editarProductos.html', producto=producto)
 
+@app.route('/productos')
+def productos():
+    return render_template('productos.html')  
 
 
 @app.route('/productos-admin')
@@ -216,13 +210,25 @@ def productosAdmin():
     try:
         # Realiza la consulta a la base de datos
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM productos")
+        cur.execute("SELECT * FROM productos WHERE estado = 0")
         data = cur.fetchall()
         app.logger.info("Datos obtenidos correctamente: %s", data)
         cur.close()
         return render_template('productosAdmin.html', data=data)
     except Exception as e:
         return str(e)
+    
+@app.route('/productos/eliminar/<int:id>', methods=['GET','POST'])
+def eliminar(id):
+    cur = mysql.connection.cursor()
+    cur.execute(
+        "UPDATE productos SET estado=%s WHERE id=%s",
+        (1, id)
+    )
+    mysql.connection.commit()
+    cur.close()
+    return redirect(url_for('productosAdmin'))
 
 if __name__ == '__main__':
     app.run(debug=True)
+
