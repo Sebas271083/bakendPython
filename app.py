@@ -19,7 +19,8 @@ app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 
 # Configuración de la carpeta de subida (debes definirla)
-app.config['UPLOAD_FOLDER'] = 'static/images'
+UPLOAD_FOLDER = os.path.abspath(os.path.join(os.path.dirname(__file__), 'static/images'))
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 mysql = MySQL(app)
 
@@ -125,6 +126,10 @@ def crear():
             return redirect(request.url)
 
         if file:
+            # Crear el directorio si no existe
+            if not os.path.exists(app.config['UPLOAD_FOLDER']):
+                os.makedirs(app.config['UPLOAD_FOLDER'])
+
             # Generar un nombre único para la imagen
             filename = str(uuid.uuid4()) + os.path.splitext(file.filename)[1]
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -143,9 +148,8 @@ def crear():
                 return redirect(url_for('index'))  
             except Exception as e:
                 print("Error al insertar en la base de datos:", e)
-                return redirect(request.url)
-
-    return render_template('crear.html')  
+                return redirect(request.url)            
+    return render_template('crear.html')
 
 @app.route('/productos/editar/<int:id>', methods=['GET', 'POST'])
 @login_required
@@ -199,24 +203,34 @@ def editarProducto(id):
     cur.close()
     return render_template('editarProductos.html', producto=producto)
 
-@app.route('/productos')
-def productos():
-    return render_template('productos.html')  
-
-
-@app.route('/productos-admin')
-@login_required
-def productosAdmin():
+def obtener_productos():
     try:
-        # Realiza la consulta a la base de datos
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM productos WHERE estado = 0")
         data = cur.fetchall()
         app.logger.info("Datos obtenidos correctamente: %s", data)
         cur.close()
-        return render_template('productosAdmin.html', data=data)
+        return data
     except Exception as e:
-        return str(e)
+        app.logger.error("Error al obtener datos: %s", e)
+        return None
+
+@app.route('/productos')
+def productos():
+    data = obtener_productos()
+    if data is not None:
+        return render_template('productos.html', data=data)
+    else:
+        return "Error al obtener los productos"
+
+@app.route('/productos-admin')
+@login_required
+def productosAdmin():
+    data = obtener_productos()
+    if data is not None:
+        return render_template('productosAdmin.html', data=data)
+    else:
+        return "Error al obtener los productos"
     
 @app.route('/productos/eliminar/<int:id>', methods=['GET','POST'])
 def eliminar(id):
